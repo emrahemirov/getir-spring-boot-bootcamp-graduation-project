@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: bootcamp
+  datasource:
+    url: jdbc:postgresql://localhost:5432/getirbootcamp
+    username: user
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+token:
+  secret-key: RaGp4Nfnv1kPukJKmOOG3attmH1Uy6tIpgZ4lRTpNUoGWvBkRbxUD8tJd3EbtBaX
+  access-token:
+    max-age: 10000
+  refresh-token:
+    max-age: 604800000
+    cookie-name: refresh-token
+
+
+
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
