@@ -1,5 +1,6 @@
 package com.getir.bootcamp.config;
 
+import com.getir.bootcamp.filter.JWTAuthenticationFilter;
 import com.getir.bootcamp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -27,13 +28,6 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(
-//                        request -> request
-//                                .requestMatchers("/api/v1/auth/**").permitAll()
-//                                .requestMatchers("/api/v1/librarian").hasAnyAuthority(Role.ROLE_LIBRARIAN.name())
-//                                .requestMatchers("/api/v1/patron").hasAnyAuthority(Role.ROLE_PATRON.name())
-//                                .anyRequest().authenticated()
-//                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

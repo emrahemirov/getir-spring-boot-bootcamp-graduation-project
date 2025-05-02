@@ -1,4 +1,4 @@
-package com.getir.bootcamp.config;
+package com.getir.bootcamp.filter;
 
 import com.getir.bootcamp.service.JwtService;
 import com.getir.bootcamp.service.UserService;
@@ -54,9 +54,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.setContext(securityContext);
                 }
             }
-        } finally {
-            filterChain.doFilter(request, response);
+        } catch (Exception ignored) {
         }
 
+        filterChain.doFilter(request, response);
     }
 }
