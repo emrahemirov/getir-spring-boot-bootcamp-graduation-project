@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<CommonResponse<Object>> handleAllExceptions(Exception ex) {
+    public ResponseEntity<CommonResponse<Object>> handleAllExceptions() {
         CommonResponse<Object> response = CommonResponse.error("an_unexpected_error_occurred");
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }

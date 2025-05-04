@@ -5,7 +5,8 @@ import com.getir.bootcamp.dto.request.SignUpRequest;
 import com.getir.bootcamp.dto.response.JwtAuthResponse;
 import com.getir.bootcamp.entity.Role;
 import com.getir.bootcamp.entity.User;
-import com.getir.bootcamp.mapper.AuthMapper;
+import com.getir.bootcamp.exception.ExceptionMessages;
+import com.getir.bootcamp.mapper.UserMapper;
 import com.getir.bootcamp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,14 +20,14 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AuthMapper authMapper;
+    private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
     public JwtAuthResponse signUp(SignUpRequest signUpRequest) {
-        User user = authMapper.signUpRequestToUser(signUpRequest);
+        User user = userMapper.signUpRequestToUser(signUpRequest);
         if (userRepository.existsByUsername(user.getUsername())) {
-            throw new IllegalArgumentException("username_already_exists");
+            throw new IllegalArgumentException(ExceptionMessages.USERNAME_ALREADY_EXISTS);
         }
         user.setRole(Role.ROLE_PATRON);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -44,7 +45,7 @@ public class AuthService {
         User user = userRepository.findByUsername(username).orElseThrow();
 
         if (!jwtService.isTokenValid(refreshToken, user)) {
-            throw new IllegalArgumentException("invalid_refresh_token");
+            throw new IllegalArgumentException(ExceptionMessages.INVALID_REFRESH_TOKEN);
         }
         String accessToken = jwtService.generateAccessToken(user);
         return new JwtAuthResponse(accessToken, refreshToken);
