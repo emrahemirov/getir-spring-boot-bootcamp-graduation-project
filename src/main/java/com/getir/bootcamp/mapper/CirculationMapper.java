@@ -7,8 +7,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {UserMapper.class, BookMapper.class})
 public interface CirculationMapper {
-
-    @Mapping(source = "user", target = "user")
-    @Mapping(source = "book", target = "book")
+    @Mapping(expression = "java(circulation.isReturned())", target = "isReturned")
+    @Mapping(expression = "java(circulation.isOverdue())", target = "isOverdue")
     CirculationResponse ciraculationEntityToCirculationResponse(Circulation circulation);
 }

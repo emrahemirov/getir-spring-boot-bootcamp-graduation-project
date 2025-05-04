@@ -5,6 +5,8 @@ import com.getir.bootcamp.dto.response.CirculationResponse;
 import com.getir.bootcamp.entity.Book;
 import com.getir.bootcamp.entity.Circulation;
 import com.getir.bootcamp.entity.User;
+import com.getir.bootcamp.exception.BadRequestException;
+import com.getir.bootcamp.exception.ConflictException;
 import com.getir.bootcamp.exception.ExceptionMessages;
 import com.getir.bootcamp.exception.ResourceNotFoundException;
 import com.getir.bootcamp.mapper.CirculationMapper;
@@ -18,8 +20,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CirculationService {
-
-    private static final int BORROW_DAYS = 14;
     private CirculationRepository circulationRepository;
     private BookService bookService;
     private UserService userService;
@@ -28,8 +28,12 @@ public class CirculationService {
     public CirculationResponse borrowBook(Long userId, CirculationRequest request) {
         Book book = bookService.getBookEntityById(request.bookId());
 
-        if (!bookService.isBookAvailable(book.getId())) {
-            throw new IllegalStateException(ExceptionMessages.BOOK_NOT_AVAILABLE);
+        if (!circulationRepository.isBookAvailable(book.getId())) {
+            throw new ConflictException(ExceptionMessages.BOOK_NOT_AVAILABLE);
+        }
+
+        if (request.dueDate().isBefore(request.borrowDate())) {
+            throw new BadRequestException(ExceptionMessages.DUE_DATE_MUST_BE_AFTER_BORROW_DATE);
         }
 
         User user = userService.getUserEntityById(userId);
@@ -37,25 +41,24 @@ public class CirculationService {
         Circulation circulation = Circulation.builder()
                 .user(user)
                 .book(book)
-                .borrowDate(LocalDate.now())
-                .dueDate(LocalDate.now().plusDays(BORROW_DAYS))
+                .borrowDate(request.borrowDate())
+                .dueDate(request.dueDate())
                 .build();
 
         Circulation saved = circulationRepository.save(circulation);
 
-        // Refetch with book + user eagerly loaded
-        Circulation loaded = circulationRepository.findByIdWithBookAndUser(saved.getId())
+        Circulation loaded = circulationRepository.findById(saved.getId())
                 .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.CIRCULATION_NOT_FOUND));
 
         return circulationMapper.ciraculationEntityToCirculationResponse(loaded);
     }
 
     public CirculationResponse returnBook(Long circulationId) {
-        Circulation circulation = circulationRepository.findByIdWithBookAndUser(circulationId)
+        Circulation circulation = circulationRepository.findById(circulationId)
                 .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.CIRCULATION_NOT_FOUND));
 
         if (circulation.isReturned()) {
-            throw new IllegalStateException(ExceptionMessages.BOOK_ALREADY_RETURNED);
+            throw new ConflictException(ExceptionMessages.BOOK_ALREADY_RETURNED);
         }
 
         circulation.setReturnDate(LocalDate.now());

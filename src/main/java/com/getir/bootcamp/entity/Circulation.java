@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -37,5 +38,34 @@ public class Circulation {
 
     public boolean isReturned() {
         return returnDate != null;
+    }
+
+    @Override
+    public String toString() {
+        return "Circulation{" +
+                "id=" + id +
+                ", user=" + user +
+                ", book=" + book +
+                ", borrowDate=" + borrowDate +
+                ", dueDate=" + dueDate +
+                ", returnDate=" + returnDate +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Circulation that = (Circulation) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(user, that.user) &&
+                Objects.equals(book, that.book) &&
+                Objects.equals(borrowDate, that.borrowDate) &&
+                Objects.equals(dueDate, that.dueDate) &&
+                Objects.equals(returnDate, that.returnDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, book, borrowDate, dueDate, returnDate);
     }
 }

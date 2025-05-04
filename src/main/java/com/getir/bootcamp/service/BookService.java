@@ -25,29 +25,24 @@ public class BookService {
     }
 
     public BookResponse getBookById(Long id) {
-        Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.BOOK_NOT_FOUND));
+        Book book = getBookEntityById(id);
         return bookMapper.bookEntityToBookResponse(book);
     }
 
     public Page<BookResponse> searchBooks(String keyword, Pageable pageable) {
-        Page<Book> books = bookRepository.findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrIsbnContainingIgnoreCaseOrGenreContainingIgnoreCase(
-                keyword, keyword, keyword, keyword, pageable
-        );
+        Page<Book> books = bookRepository.searchBooks(keyword, pageable);
         return books.map(bookMapper::bookEntityToBookResponse);
     }
 
     public BookResponse updateBook(Long id, BookRequest bookRequest) {
-        Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.BOOK_NOT_FOUND));
+        Book book = getBookEntityById(id);
         bookMapper.updateBookEntityFromRequest(bookRequest, book);
         Book savedBook = bookRepository.save(book);
         return bookMapper.bookEntityToBookResponse(savedBook);
     }
 
     public void deleteBook(Long id) {
-        Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.BOOK_NOT_FOUND));
+        Book book = getBookEntityById(id);
         bookRepository.delete(book);
     }
 
@@ -56,11 +51,5 @@ public class BookService {
                 .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.BOOK_NOT_FOUND));
     }
 
-    public boolean isBookAvailable(Long bookId) {
-        Book book = getBookEntityById(bookId);
-        long activeCirculations = book.getCirculations().stream()
-                .filter(c -> c.getReturnDate() == null)
-                .count();
-        return activeCirculations == 0;
-    }
+  
 }

@@ -8,6 +8,8 @@ public record CirculationResponse(
         BookResponse book,
         LocalDate borrowDate,
         LocalDate dueDate,
-        LocalDate returnDate
+        LocalDate returnDate,
+        boolean isOverdue,
+        boolean isReturned
 ) {
 }
