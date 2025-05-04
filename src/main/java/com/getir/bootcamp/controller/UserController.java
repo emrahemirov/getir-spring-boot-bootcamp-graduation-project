@@ -4,6 +4,7 @@ import com.getir.bootcamp.dto.CommonResponse;
 import com.getir.bootcamp.dto.request.UserRequest;
 import com.getir.bootcamp.dto.response.UserResponse;
 import com.getir.bootcamp.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,7 +28,7 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<CommonResponse<UserResponse>> updateUser(
             @PathVariable Long id,
-            @RequestBody UserRequest userRequest) {
+            @Valid @RequestBody UserRequest userRequest) {
         UserResponse updatedUser = userService.updateUser(id, userRequest);
         return ResponseEntity.ok(CommonResponse.ok(updatedUser));
     }
@@ -40,7 +41,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('ROLE_LIBRARIAN')")
-    @DeleteMapping("/{id}")
+    @PatchMapping("/{id}/set-librarian")
     public ResponseEntity<CommonResponse<UserResponse>> setUserRoleLibrarian(@PathVariable Long id) {
         UserResponse updatedUser = userService.setUserRoleLibrarian(id);
         return ResponseEntity.ok(CommonResponse.ok(updatedUser));

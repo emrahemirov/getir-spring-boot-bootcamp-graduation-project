@@ -5,6 +5,7 @@ import com.getir.bootcamp.dto.CommonResponse;
 import com.getir.bootcamp.dto.request.SignInRequest;
 import com.getir.bootcamp.dto.request.SignUpRequest;
 import com.getir.bootcamp.dto.response.JwtAuthResponse;
+import com.getir.bootcamp.exception.ExceptionMessages;
 import com.getir.bootcamp.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,7 +50,7 @@ public class AuthController {
                 );
 
         if (refreshTokenOpt.isEmpty()) {
-            CommonResponse<JwtAuthResponse> errorResponse = CommonResponse.error("refresh_token_is_missing");
+            CommonResponse<JwtAuthResponse> errorResponse = CommonResponse.error(ExceptionMessages.REFRESH_TOKEN_IS_MISSING);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
 

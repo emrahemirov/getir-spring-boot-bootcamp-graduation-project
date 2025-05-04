@@ -1,6 +1,7 @@
 package com.getir.bootcamp.advice;
 
 import com.getir.bootcamp.dto.CommonResponse;
+import com.getir.bootcamp.exception.ExceptionMessages;
 import com.getir.bootcamp.exception.ResourceNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -47,7 +48,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CommonResponse<Object>> handleAllExceptions() {
-        CommonResponse<Object> response = CommonResponse.error("an_unexpected_error_occurred");
+        CommonResponse<Object> response = CommonResponse.error(ExceptionMessages.AN_UNEXPECTED_ERROR_OCCURRED);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

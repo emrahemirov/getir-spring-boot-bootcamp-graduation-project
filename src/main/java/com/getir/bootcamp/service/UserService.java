@@ -24,30 +24,30 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException(ExceptionMessages.USER_NOT_FOUND));
     }
 
-    public User getUser(Long id) {
+    public User getUserEntityById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.USER_NOT_FOUND));
     }
 
     public UserResponse getUserById(Long id) {
-        User user = getUser(id);
+        User user = getUserEntityById(id);
         return userMapper.toUserResponse(user);
     }
 
     public UserResponse updateUser(Long id, UserRequest userRequest) {
-        User user = getUser(id);
+        User user = getUserEntityById(id);
         userMapper.updateUserFromUserRequest(userRequest, user);
         User savedUser = userRepository.save(user);
         return userMapper.toUserResponse(savedUser);
     }
 
     public void deleteUser(Long id) {
-        User user = getUser(id);
+        User user = getUserEntityById(id);
         userRepository.delete(user);
     }
 
     public UserResponse setUserRoleLibrarian(Long id) {
-        User user = getUser(id);
+        User user = getUserEntityById(id);
         user.setRole(Role.ROLE_LIBRARIAN);
         userRepository.save(user);
         return userMapper.toUserResponse(user);
