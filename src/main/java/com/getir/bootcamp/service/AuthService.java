@@ -25,7 +25,7 @@ public class AuthService {
     private final JwtService jwtService;
 
     public JwtAuthResponse signUp(SignUpRequest signUpRequest) {
-        User user = userMapper.signUpRequestToUser(signUpRequest);
+        User user = userMapper.signUpRequestToUserEntity(signUpRequest);
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new IllegalArgumentException(ExceptionMessages.USERNAME_ALREADY_EXISTS);
         }

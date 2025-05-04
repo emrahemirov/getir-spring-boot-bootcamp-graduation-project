@@ -8,9 +8,9 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface BookMapper {
-    BookResponse toResponse(Book book);
+    BookResponse bookEntityToBookResponse(Book book);
 
-    Book toEntity(BookRequest bookRequest);
+    Book bookRequestToBookEntity(BookRequest bookRequest);
 
-    void updateBookFromRequest(BookRequest bookRequest, @MappingTarget Book book);
+    void updateBookEntityFromRequest(BookRequest bookRequest, @MappingTarget Book book);
 }

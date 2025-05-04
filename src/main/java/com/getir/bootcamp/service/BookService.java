@@ -19,35 +19,48 @@ public class BookService {
     private BookMapper bookMapper;
 
     public BookResponse addBook(BookRequest bookRequest) {
-        Book book = bookMapper.toEntity(bookRequest);
+        Book book = bookMapper.bookRequestToBookEntity(bookRequest);
         Book savedBook = bookRepository.save(book);
-        return bookMapper.toResponse(savedBook);
+        return bookMapper.bookEntityToBookResponse(savedBook);
     }
 
     public BookResponse getBookById(Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.BOOK_NOT_FOUND));
-        return bookMapper.toResponse(book);
+        return bookMapper.bookEntityToBookResponse(book);
     }
 
     public Page<BookResponse> searchBooks(String keyword, Pageable pageable) {
         Page<Book> books = bookRepository.findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrIsbnContainingIgnoreCaseOrGenreContainingIgnoreCase(
                 keyword, keyword, keyword, keyword, pageable
         );
-        return books.map(bookMapper::toResponse);
+        return books.map(bookMapper::bookEntityToBookResponse);
     }
 
     public BookResponse updateBook(Long id, BookRequest bookRequest) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.BOOK_NOT_FOUND));
-        bookMapper.updateBookFromRequest(bookRequest, book);
+        bookMapper.updateBookEntityFromRequest(bookRequest, book);
         Book savedBook = bookRepository.save(book);
-        return bookMapper.toResponse(savedBook);
+        return bookMapper.bookEntityToBookResponse(savedBook);
     }
 
     public void deleteBook(Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.BOOK_NOT_FOUND));
         bookRepository.delete(book);
+    }
+
+    public Book getBookEntityById(Long id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.BOOK_NOT_FOUND));
+    }
+
+    public boolean isBookAvailable(Long bookId) {
+        Book book = getBookEntityById(bookId);
+        long activeCirculations = book.getCirculations().stream()
+                .filter(c -> c.getReturnDate() == null)
+                .count();
+        return activeCirculations == 0;
     }
 }

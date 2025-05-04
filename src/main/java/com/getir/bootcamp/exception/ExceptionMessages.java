@@ -13,6 +13,11 @@ public class ExceptionMessages {
     public static final String FIELD_MUST_BE_AT_MOST_13_CHARACTERS = "field_must_be_at_most_13_characters";
     public static final String FIELD_MUST_BE_BETWEEN_3_AND_50_CHARACTERS = "field_must_be_between_3_and_50_characters";
     public static final String FIELD_IS_REQUIRED = "field_is_required";
+    public static final String CIRCULATION_NOT_FOUND = "circulation_not_found";
+    public static final String BOOK_ALREADY_RETURNED = "book_already_returned";
+    public static final String BOOK_NOT_AVAILABLE = "book_not_available";
+    public static final String PASSWORD_MUST_BE_AT_LEAST_6_CHARACTERS = "password_must_be_at_least_6_characters";
+
 
     private ExceptionMessages() {
     }
