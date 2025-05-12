@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -48,5 +49,28 @@ public class CommonResponse<T> {
                 .isSucceed(true)
                 .timestamp(LocalDateTime.now())
                 .build();
+    }
+
+    @Override
+    public String toString() {
+        return "CommonResponse{" +
+                "isSucceed=" + isSucceed +
+                ", data=" + data +
+                ", errorMessage='" + errorMessage + '\'' +
+                ", validationErrors=" + validationErrors +
+                ", timestamp=" + timestamp +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        CommonResponse<?> that = (CommonResponse<?>) o;
+        return isSucceed == that.isSucceed && Objects.equals(data, that.data) && Objects.equals(errorMessage, that.errorMessage) && Objects.equals(validationErrors, that.validationErrors) && Objects.equals(timestamp, that.timestamp);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(isSucceed, data, errorMessage, validationErrors, timestamp);
     }
 }
