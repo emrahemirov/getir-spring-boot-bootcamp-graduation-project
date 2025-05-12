@@ -34,7 +34,16 @@ logging:
 token:
   secret-key: RaGp4Nfnv1kPukJKmOOG3attmH1Uy6tIpgZ4lRTpNUoGWvBkRbxUD8tJd3EbtBaX
   access-token:
-    max-age: 10000
+    max-age: 3_600_000
   refresh-token:
-    max-age: 604800000
+    max-age: 604_800_000
     cookie-name: refresh-token
+
+#springdoc:
+#  group-configs:
+#    - group: mvc-api
+#      packages-to-scan: com.getir.bootcamp.controller
+#      paths-to-match: /mvc/**
+#    - group: webflux-api
+#      paths-to-match: /webflux/**
+#      packages-to-scan: com.getir.bootcamp.reactivecontroller

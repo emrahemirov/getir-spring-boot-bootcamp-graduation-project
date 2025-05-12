@@ -7,5 +7,6 @@ public record UserResponse(
         String username,
         String firstName,
         String lastName,
+        Boolean canBorrow,
         Role role) {
 }

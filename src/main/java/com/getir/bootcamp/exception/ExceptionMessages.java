@@ -19,6 +19,7 @@ public class ExceptionMessages {
     public static final String PASSWORD_MUST_BE_AT_LEAST_6_CHARACTERS = "password_must_be_at_least_6_characters";
     public static final String FIELD_MUST_BE_A_FUTURE_DATE = "field_must_be_a_future_date";
     public static final String DUE_DATE_MUST_BE_AFTER_BORROW_DATE = "due_date_must_be_after_borrow_date";
+    public static final String USER_CANNOT_BORROW = "user_cannot_borrow";
     public static final String UNAUTHORIZED_ACCESS = "unauthorized_access";
     public static final String FORBIDDEN_ACCESS = "forbidden_access";
 

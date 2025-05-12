@@ -33,11 +33,15 @@ public class Book {
     @Column(nullable = false)
     private String genre;
 
+    @Column(nullable = false)
+    private Boolean isAvailable;
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return Objects.equals(id, book.id) &&
+        return isAvailable == book.isAvailable &&
+                Objects.equals(id, book.id) &&
                 Objects.equals(title, book.title) &&
                 Objects.equals(author, book.author) &&
                 Objects.equals(isbn, book.isbn) &&
@@ -47,7 +51,7 @@ public class Book {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, author, isbn, publicationDate, genre);
+        return Objects.hash(id, title, author, isbn, publicationDate, genre, isAvailable);
     }
 
     @Override
@@ -59,6 +63,7 @@ public class Book {
                 ", isbn='" + isbn + '\'' +
                 ", publicationDate=" + publicationDate +
                 ", genre='" + genre + '\'' +
+                ", isAvailable=" + isAvailable +
                 '}';
     }
 }

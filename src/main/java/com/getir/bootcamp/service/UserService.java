@@ -52,4 +52,9 @@ public class UserService {
         userRepository.save(user);
         return userMapper.userEntityToUserResponse(user);
     }
+
+    public void setUserBorrowability(User user, Boolean canBorrow) {
+        user.setCanBorrow(canBorrow);
+        userRepository.save(user);
+    }
 }

@@ -20,16 +20,16 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CirculationService {
-    private CirculationRepository circulationRepository;
-    private BookService bookService;
-    private UserService userService;
-    private CirculationMapper circulationMapper;
+    private final CirculationRepository circulationRepository;
+    private final BookService bookService;
+    private final UserService userService;
+    private final CirculationMapper circulationMapper;
 
     public CirculationResponse borrowBook(Long userId, CirculationRequest request) {
         Book book = bookService.getBookEntityById(request.bookId());
 
-        if (!circulationRepository.isBookAvailable(book.getId())) {
-            throw new ConflictException(ExceptionMessages.BOOK_NOT_AVAILABLE);
+        if (Boolean.FALSE.equals(book.getIsAvailable())) {
+            throw new BadRequestException(ExceptionMessages.BOOK_NOT_AVAILABLE);
         }
 
         if (request.dueDate().isBefore(request.borrowDate())) {
@@ -37,6 +37,10 @@ public class CirculationService {
         }
 
         User user = userService.getUserEntityById(userId);
+
+        if (Boolean.FALSE.equals(user.getCanBorrow())) {
+            throw new BadRequestException(ExceptionMessages.USER_CANNOT_BORROW);
+        }
 
         Circulation circulation = Circulation.builder()
                 .user(user)
@@ -50,6 +54,9 @@ public class CirculationService {
         Circulation loaded = circulationRepository.findById(saved.getId())
                 .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.CIRCULATION_NOT_FOUND));
 
+        userService.setUserBorrowability(user, false);
+        bookService.setBookAvailability(book, false);
+
         return circulationMapper.ciraculationEntityToCirculationResponse(loaded);
     }
 
@@ -61,8 +68,14 @@ public class CirculationService {
             throw new ConflictException(ExceptionMessages.BOOK_ALREADY_RETURNED);
         }
 
+
         circulation.setReturnDate(LocalDate.now());
         Circulation updated = circulationRepository.save(circulation);
+
+
+        userService.setUserBorrowability(circulation.getUser(), true);
+        bookService.setBookAvailability(circulation.getBook(), true);
+
         return circulationMapper.ciraculationEntityToCirculationResponse(updated);
     }
 

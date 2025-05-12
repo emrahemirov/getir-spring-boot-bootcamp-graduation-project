@@ -33,6 +33,8 @@ public class User implements UserDetails {
     private String firstName;
     @Column(nullable = false)
     private String lastName;
+    @Column(nullable = false)
+    private Boolean canBorrow;
 
 
     @Column(nullable = false)
@@ -68,31 +70,33 @@ public class User implements UserDetails {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) &&
-                Objects.equals(firstName, user.firstName) &&
-                Objects.equals(lastName, user.lastName) &&
-                Objects.equals(username, user.username) &&
-                Objects.equals(password, user.password) &&
-                role == user.role;
-    }
-
-    @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", canBorrow=" + canBorrow +
                 ", role=" + role +
                 '}';
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(canBorrow, user.canBorrow) &&
+                role == user.role;
+    }
+
+    @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, firstName, lastName, role);
+        return Objects.hash(id, username, password, firstName, lastName, canBorrow, role);
     }
 }

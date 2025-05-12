@@ -6,6 +6,7 @@ import com.getir.bootcamp.exception.ConflictException;
 import com.getir.bootcamp.exception.ExceptionMessages;
 import com.getir.bootcamp.exception.ResourceNotFoundException;
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -76,7 +78,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<CommonResponse<Void>> handleAllExceptions() {
+    public ResponseEntity<CommonResponse<Void>> handleAllExceptions(Exception ex) {
+        log.error(ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(CommonResponse.error(ExceptionMessages.AN_UNEXPECTED_ERROR_OCCURRED));
     }

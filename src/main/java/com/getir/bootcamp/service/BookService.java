@@ -15,11 +15,12 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class BookService {
-    private BookRepository bookRepository;
-    private BookMapper bookMapper;
+    private final BookRepository bookRepository;
+    private final BookMapper bookMapper;
 
     public BookResponse addBook(BookRequest bookRequest) {
         Book book = bookMapper.bookRequestToBookEntity(bookRequest);
+        book.setIsAvailable(true);
         Book savedBook = bookRepository.save(book);
         return bookMapper.bookEntityToBookResponse(savedBook);
     }
@@ -51,5 +52,8 @@ public class BookService {
                 .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.BOOK_NOT_FOUND));
     }
 
-  
+    public void setBookAvailability(Book book, boolean isAvailable) {
+        book.setIsAvailable(isAvailable);
+        bookRepository.save(book);
+    }
 }

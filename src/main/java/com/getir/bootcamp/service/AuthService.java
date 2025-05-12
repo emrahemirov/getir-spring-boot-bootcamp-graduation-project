@@ -5,6 +5,7 @@ import com.getir.bootcamp.dto.request.SignUpRequest;
 import com.getir.bootcamp.dto.response.JwtAuthResponse;
 import com.getir.bootcamp.entity.Role;
 import com.getir.bootcamp.entity.User;
+import com.getir.bootcamp.exception.BadRequestException;
 import com.getir.bootcamp.exception.ExceptionMessages;
 import com.getir.bootcamp.mapper.UserMapper;
 import com.getir.bootcamp.repository.UserRepository;
@@ -30,6 +31,7 @@ public class AuthService {
             throw new IllegalArgumentException(ExceptionMessages.USERNAME_ALREADY_EXISTS);
         }
         user.setRole(Role.ROLE_PATRON);
+        user.setCanBorrow(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
@@ -52,6 +54,8 @@ public class AuthService {
     }
 
     private JwtAuthResponse getJwtAuthResponse(String username, String password) {
+        userRepository.findByUsername(username).orElseThrow(() -> new BadRequestException(ExceptionMessages.USER_NOT_FOUND));
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         username,

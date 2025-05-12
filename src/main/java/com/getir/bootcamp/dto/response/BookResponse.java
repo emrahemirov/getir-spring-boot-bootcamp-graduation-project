@@ -8,6 +8,7 @@ public record BookResponse(
         String author,
         String isbn,
         LocalDate publicationDate,
+        Boolean isAvailable,
         String genre
 ) {
 }
