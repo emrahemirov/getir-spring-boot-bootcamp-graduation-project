@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -35,6 +36,9 @@ public class Book {
 
     @Column(nullable = false)
     private Boolean isAvailable;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Circulation> circulations;
 
     @Override
     public boolean equals(Object o) {

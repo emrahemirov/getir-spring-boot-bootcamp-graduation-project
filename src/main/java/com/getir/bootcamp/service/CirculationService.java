@@ -25,7 +25,7 @@ public class CirculationService {
     private final UserService userService;
     private final CirculationMapper circulationMapper;
 
-    public CirculationResponse borrowBook(Long userId, CirculationRequest request) {
+    public CirculationResponse borrowBook(String username, CirculationRequest request) {
         Book book = bookService.getBookEntityById(request.bookId());
 
         if (Boolean.FALSE.equals(book.getIsAvailable())) {
@@ -36,7 +36,7 @@ public class CirculationService {
             throw new BadRequestException(ExceptionMessages.DUE_DATE_MUST_BE_AFTER_BORROW_DATE);
         }
 
-        User user = userService.getUserEntityById(userId);
+        User user = userService.getUserEntityByUsername(username);
 
         if (Boolean.FALSE.equals(user.getCanBorrow())) {
             throw new BadRequestException(ExceptionMessages.USER_CANNOT_BORROW);
@@ -79,8 +79,8 @@ public class CirculationService {
         return circulationMapper.ciraculationEntityToCirculationResponse(updated);
     }
 
-    public List<CirculationResponse> getUserHistory(Long userId) {
-        List<Circulation> records = circulationRepository.findByUserIdWithBookAndUser(userId);
+    public List<CirculationResponse> getUserHistory(String username) {
+        List<Circulation> records = circulationRepository.findByUsernameWithBookAndUser(username);
         return records.stream().map(circulationMapper::ciraculationEntityToCirculationResponse).toList();
     }
 

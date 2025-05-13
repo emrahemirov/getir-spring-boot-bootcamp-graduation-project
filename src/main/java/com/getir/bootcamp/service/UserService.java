@@ -24,30 +24,30 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException(ExceptionMessages.USER_NOT_FOUND));
     }
 
-    public User getUserEntityById(Long id) {
-        return userRepository.findById(id)
+    public User getUserEntityByUsername(String username) {
+        return userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.USER_NOT_FOUND));
     }
 
-    public UserResponse getUserById(Long id) {
-        User user = getUserEntityById(id);
+    public UserResponse getUserByUsername(String username) {
+        User user = getUserEntityByUsername(username);
         return userMapper.userEntityToUserResponse(user);
     }
 
-    public UserResponse updateUser(Long id, UserRequest userRequest) {
-        User user = getUserEntityById(id);
+    public UserResponse updateUser(String username, UserRequest userRequest) {
+        User user = getUserEntityByUsername(username);
         userMapper.updateUserEntityFromUserRequest(userRequest, user);
         User savedUser = userRepository.save(user);
         return userMapper.userEntityToUserResponse(savedUser);
     }
 
-    public void deleteUser(Long id) {
-        User user = getUserEntityById(id);
+    public void deleteUser(String username) {
+        User user = getUserEntityByUsername(username);
         userRepository.delete(user);
     }
 
-    public UserResponse setUserRoleLibrarian(Long id) {
-        User user = getUserEntityById(id);
+    public UserResponse setUserRoleLibrarian(String username) {
+        User user = getUserEntityByUsername(username);
         user.setRole(Role.ROLE_LIBRARIAN);
         userRepository.save(user);
         return userMapper.userEntityToUserResponse(user);

@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: username
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+
+logging:
+  level:
+    org.springframework.boot.context.config: DEBUG
+
+token:
+  secret-key: RaGp4Nfnv1kPukJKmOOG3attmH1Uy6tIpgZ4lRTpNUoGWvBkRbxUD8tJd3EbtBaX
+  access-token:
+    max-age: 3600000
+  refresh-token:
+    max-age: 604800000
+    cookie-name: refresh-token

@@ -22,10 +22,10 @@ public class AddStartupEntities implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
 //        userRepository.deleteAll();
         if (!userRepository.existsByUsername("librarian")) {
-            userRepository.save(new User(null, "librarian", passwordEncoder.encode("password"), "librarian", "librarian", true, Role.ROLE_LIBRARIAN));
+            userRepository.save(new User("librarian", passwordEncoder.encode("password"), "librarian", "librarian", true, Role.ROLE_LIBRARIAN, null));
         }
         if (!userRepository.existsByUsername("patron")) {
-            userRepository.save(new User(null, "patron", passwordEncoder.encode("password"), "patron", "patron", true, Role.ROLE_PATRON));
+            userRepository.save(new User("patron", passwordEncoder.encode("password"), "patron", "patron", true, Role.ROLE_PATRON, null));
         }
     }
 }

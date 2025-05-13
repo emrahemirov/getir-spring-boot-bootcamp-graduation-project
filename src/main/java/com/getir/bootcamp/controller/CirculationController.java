@@ -3,7 +3,6 @@ package com.getir.bootcamp.controller;
 import com.getir.bootcamp.dto.CommonResponse;
 import com.getir.bootcamp.dto.request.CirculationRequest;
 import com.getir.bootcamp.dto.response.CirculationResponse;
-import com.getir.bootcamp.entity.User;
 import com.getir.bootcamp.service.CirculationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,8 +35,9 @@ public class CirculationController {
                     @ApiResponse(responseCode = "403", description = "Forbidden - Not authorized")
             }
     )
-    @PreAuthorize("hasAuthority('ROLE_PATRON')")
+
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_PATRON')")
     public ResponseEntity<CommonResponse<CirculationResponse>> borrowBook(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     required = true,
@@ -44,9 +45,9 @@ public class CirculationController {
                     content = @Content(schema = @Schema(implementation = CirculationRequest.class))
             )
             @Valid @RequestBody CirculationRequest request,
-            @AuthenticationPrincipal User currentUser) {
+            @AuthenticationPrincipal UserDetails currentUser) {
 
-        CirculationResponse response = circulationService.borrowBook(currentUser.getId(), request);
+        CirculationResponse response = circulationService.borrowBook(currentUser.getUsername(), request);
         return ResponseEntity.ok(CommonResponse.ok(response));
     }
 
@@ -79,9 +80,9 @@ public class CirculationController {
     @PreAuthorize("hasAuthority('ROLE_PATRON')")
     @GetMapping("/history")
     public ResponseEntity<CommonResponse<List<CirculationResponse>>> getMyHistory(
-            @AuthenticationPrincipal User currentUser) {
+            @AuthenticationPrincipal UserDetails currentUser) {
 
-        List<CirculationResponse> history = circulationService.getUserHistory(currentUser.getId());
+        List<CirculationResponse> history = circulationService.getUserHistory(currentUser.getUsername());
         return ResponseEntity.ok(CommonResponse.ok(history));
     }
 

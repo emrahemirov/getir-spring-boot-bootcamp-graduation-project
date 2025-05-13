@@ -36,9 +36,9 @@ public class UserController {
             }
     )
     @PreAuthorize("hasAuthority('ROLE_LIBRARIAN')")
-    @GetMapping("/{id}")
-    public ResponseEntity<CommonResponse<UserResponse>> getUserById(@PathVariable Long id) {
-        UserResponse userResponse = userService.getUserById(id);
+    @GetMapping("/{username}")
+    public ResponseEntity<CommonResponse<UserResponse>> getUserByUsername(@PathVariable String username) {
+        UserResponse userResponse = userService.getUserByUsername(username);
         return ResponseEntity.ok(CommonResponse.ok(userResponse));
     }
 
@@ -56,9 +56,9 @@ public class UserController {
             }
     )
     @PreAuthorize("hasAuthority('ROLE_LIBRARIAN')")
-    @PutMapping("/{id}")
+    @PutMapping("/{username}")
     public ResponseEntity<CommonResponse<UserResponse>> updateUser(
-            @PathVariable Long id,
+            @PathVariable String username,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     required = true,
                     description = "Updated user details",
@@ -66,7 +66,7 @@ public class UserController {
             )
             @Valid @RequestBody UserRequest userRequest) {
 
-        UserResponse updatedUser = userService.updateUser(id, userRequest);
+        UserResponse updatedUser = userService.updateUser(username, userRequest);
         return ResponseEntity.ok(CommonResponse.ok(updatedUser));
     }
 
@@ -84,9 +84,9 @@ public class UserController {
             }
     )
     @PreAuthorize("hasAuthority('ROLE_LIBRARIAN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<CommonResponse<Void>> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/{username}")
+    public ResponseEntity<CommonResponse<Void>> deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
         return ResponseEntity.ok(CommonResponse.noContent());
     }
 
@@ -103,9 +103,9 @@ public class UserController {
             }
     )
     @PreAuthorize("hasAuthority('ROLE_LIBRARIAN')")
-    @PatchMapping("/{id}/set-librarian")
-    public ResponseEntity<CommonResponse<UserResponse>> setUserRoleLibrarian(@PathVariable Long id) {
-        UserResponse updatedUser = userService.setUserRoleLibrarian(id);
+    @PatchMapping("/{username}/set-librarian")
+    public ResponseEntity<CommonResponse<UserResponse>> setUserRoleLibrarian(@PathVariable String username) {
+        UserResponse updatedUser = userService.setUserRoleLibrarian(username);
         return ResponseEntity.ok(CommonResponse.ok(updatedUser));
     }
 }
