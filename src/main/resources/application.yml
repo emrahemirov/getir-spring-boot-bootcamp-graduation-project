@@ -38,12 +38,3 @@ token:
   refresh-token:
     max-age: 604_800_000
     cookie-name: refresh-token
-
-#springdoc:
-#  group-configs:
-#    - group: mvc-api
-#      packages-to-scan: com.getir.bootcamp.controller
-#      paths-to-match: /mvc/**
-#    - group: webflux-api
-#      paths-to-match: /webflux/**
-#      packages-to-scan: com.getir.bootcamp.reactivecontroller

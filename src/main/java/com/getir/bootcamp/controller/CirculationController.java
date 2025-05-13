@@ -35,7 +35,6 @@ public class CirculationController {
                     @ApiResponse(responseCode = "403", description = "Forbidden - Not authorized")
             }
     )
-
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_PATRON')")
     public ResponseEntity<CommonResponse<CirculationResponse>> borrowBook(
