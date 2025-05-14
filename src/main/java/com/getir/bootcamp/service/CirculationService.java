@@ -11,6 +11,7 @@ import com.getir.bootcamp.exception.ExceptionMessages;
 import com.getir.bootcamp.exception.ResourceNotFoundException;
 import com.getir.bootcamp.mapper.CirculationMapper;
 import com.getir.bootcamp.repository.CirculationRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ public class CirculationService {
     private final UserService userService;
     private final CirculationMapper circulationMapper;
 
+    @Transactional
     public CirculationResponse borrowBook(String username, CirculationRequest request) {
         Book book = bookService.getBookEntityById(request.bookId());
 
@@ -60,6 +62,7 @@ public class CirculationService {
         return circulationMapper.ciraculationEntityToCirculationResponse(loaded);
     }
 
+    @Transactional
     public CirculationResponse returnBook(Long circulationId) {
         Circulation circulation = circulationRepository.findById(circulationId)
                 .orElseThrow(() -> new ResourceNotFoundException(ExceptionMessages.CIRCULATION_NOT_FOUND));

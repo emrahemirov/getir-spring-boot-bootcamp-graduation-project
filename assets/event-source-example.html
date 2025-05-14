@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Reactive Books Stream</title>
+  </head>
+  <body>
+    <h1>Streaming Books</h1>
+    <ul id="book-list"></ul>
+
+    <script>
+      setTimeout(() => {
+        const eventSource = new EventSource(
+          "http://localhost:8080/api/v1/reactive-books"
+        );
+
+        eventSource.onmessage = function (event) {
+          const book = JSON.parse(event.data);
+          console.log("Received book:", book);
+
+          const li = document.createElement("li");
+          li.textContent = `${book.title} by ${book.author}`;
+          document.getElementById("book-list").appendChild(li);
+        };
+
+        eventSource.onerror = function (err) {
+          console.error("SSE Error:", err);
+          eventSource.close();
+        };
+      }, 2000);
+    </script>
+  </body>
+</html>

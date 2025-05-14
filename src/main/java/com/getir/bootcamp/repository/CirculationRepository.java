@@ -12,7 +12,7 @@ public interface CirculationRepository extends JpaRepository<Circulation, Long> 
     @Query("SELECT c FROM Circulation c JOIN FETCH c.book JOIN FETCH c.user WHERE c.user.username = :username")
     List<Circulation> findByUsernameWithBookAndUser(String username);
 
-    @Query("SELECT c FROM Circulation c JOIN FETCH c.book JOIN FETCH c.user WHERE c.returnDate IS NULL AND c.dueDate < :date")
+    @Query("SELECT c FROM Circulation c JOIN FETCH c.book JOIN FETCH c.user WHERE c.dueDate < :date")
     List<Circulation> findOverdueWithBookAndUser(LocalDate date);
 
     @Query("SELECT c FROM Circulation c JOIN FETCH c.book JOIN FETCH c.user")

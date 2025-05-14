@@ -1,0 +1,459 @@
+{
+	"info": {
+		"_postman_id": "2e59a89d-90b3-4dda-abc1-cef7fba27bb7",
+		"name": "GetirBootcamp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44604220",
+		"_collection_link": "https://emrah-282630.postman.co/workspace/Emrah's-Workspace~a15836a2-ac14-4361-8fa7-59e3870a1e63/collection/44604220-2e59a89d-90b3-4dda-abc1-cef7fba27bb7?action=share&source=collection_link&creator=44604220"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "sign-up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"accessToken\", response.data.accessToken);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"username\",\r\n    \"password\": \"password\",\r\n    \"firstName\": \"firstName\",\r\n    \"lastName\": \"lastName\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/sign-up",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"sign-up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sign-in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"accessToken\", response.data.accessToken);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"librarian\",\r\n    \"password\": \"password\"\r\n}\r\n// {\r\n//     \"username\": \"patron\",\r\n//     \"password\": \"password\"\r\n// }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/sign-in",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"sign-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh-token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"accessToken\", response.data.accessToken);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/refresh-token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "get-user (ROLE_LIBRARIAN)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/username",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"username"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-user (ROLE_LIBRARIAN)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/7",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-user (ROLE_LIBRARIAN)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"username\",\r\n    \"firstName\": \"firstName\",\r\n    \"lastName\": \"lastName\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/username",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"username"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "set-user-librarian (ROLE_LIBRARIAN)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/username/set-librarian",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"username",
+								"set-librarian"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "book",
+			"item": [
+				{
+					"name": "add-book (ROLE_LIBRARIAN)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"The Hobbit\",\r\n    \"author\": \"J.R.R. Tolkien\",\r\n    \"isbn\": \"123456\",\r\n    \"publicationDate\": \"1937-09-21\",\r\n    \"genre\": \"Fantasy\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-book-by-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-book (ROLE_LIBRARIAN)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"The Hobbit\",\r\n    \"author\": \"J.R.R. Tolkien\",\r\n    \"isbn\": \"9780261102217\",\r\n    \"publicationDate\": \"1937-09-21\",\r\n    \"genre\": \"Fantasy Genre\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-book (ROLE_LIBRARIAN)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"books",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "circulation",
+			"item": [
+				{
+					"name": "borrow-book (ROLE_PATRON)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bookId\": 2,\r\n    \"borrowDate\": \"2025-07-08\",\r\n    \"dueDate\": \"2025-11-11\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/circulations",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"circulations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "return-book (ROLE_PATRON)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/circulations/1/return",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"circulations",
+								"1",
+								"return"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-circulation-history (ROLE_PATRON)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/circulations/history",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"circulations",
+								"history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-all-circulation-history (ROLE_LIBRARIAN))",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/circulations/history/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"circulations",
+								"history",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-overdues (ROLE_LIBRARIAN))",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/circulations/overdue",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"circulations",
+								"overdue"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": ""
+		}
+	]
+}
